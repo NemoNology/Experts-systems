@@ -5,8 +5,255 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_project"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Expert System Creator"
+        Height="450"
+        Width="800">
 
+    <Window.CommandBindings>
+        <CommandBinding Command="New"
+                        Executed="OnNewButton_Click" />
+        <CommandBinding Command="Open"
+                        Executed="OnOpenButton_Click" />
+        <CommandBinding Command="Save"
+                        Executed="OnSaveButton_Click" />
+        <CommandBinding Command="SaveAs"
+                        Executed="OnSaveAsButton_Click" />
+    </Window.CommandBindings>
+
+    <Window.Resources>
+        <Style x:Key="btn"
+               TargetType="Button">
+            <Setter Property="Margin"
+                    Value="10" />
+            <Setter Property="Padding"
+                    Value="5" />
+        </Style>
+        <Style x:Key="h3"
+               TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+            <Setter Property="TextAlignment"
+                    Value="Center" />
+            <Setter Property="Padding"
+                    Value="5" />
+            <Setter Property="Background"
+                    Value="LightGray" />
+        </Style>
+        <Style x:Key="sp-row-c"
+               TargetType="StackPanel">
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="HorizontalAlignment"
+                    Value="Center" />
+            <Setter Property="Orientation"
+                    Value="Horizontal" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <TabControl>
+            <TabItem Header="Edit"
+                     IsSelected="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Menu Grid.ColumnSpan="3">
+                        <MenuItem Header="Project">
+                            <MenuItem Header="New"
+                                      Command="New" />
+                            <MenuItem Header="Open"
+                                      Command="Open" />
+                            <Separator />
+                            <MenuItem Header="Save"
+                                      Command="Save" />
+                            <MenuItem Header="Save as"
+                                      Command="SaveAs" />
+                        </MenuItem>
+                    </Menu>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+                            <TextBlock Text="Questions"
+                                       Style="{StaticResource h3}" />
+                            <ListBox x:Name="outputQuestions"
+                                     VerticalAlignment="Stretch"
+                                     SelectionChanged="OnQuestionsSelectionChanged" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <TextBlock Text="Text:"
+                                       TextAlignment="Center" />
+                            <TextBox x:Name="inputQuestionText"
+                                     TextChanged="OnQuestionTextChanged" />
+                            <StackPanel Style="{StaticResource sp-row-c}">
+                                <Button Content="Add question"
+                                        Style="{StaticResource btn}"
+                                        Click="OnAddQuestionClick" />
+                                <Button Content="Remove selected question"
+                                        Style="{StaticResource btn}"
+                                        Click="OnRemoveSelectedQuestionClick" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="Results"
+                                       Style="{StaticResource h3}" />
+                            <ListBox x:Name="outputResults"
+                                     VerticalAlignment="Stretch"
+                                     SelectionChanged="OnResultsSelectionChanged" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="1">
+                            <StackPanel>
+                                <TextBlock Text="Text:"
+                                           TextAlignment="Center" />
+                                <TextBox x:Name="inputResultText"
+                                         TextChanged="OnResultTextChanged" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource sp-row-c}">
+                                <Button Content="Add result"
+                                        Style="{StaticResource btn}"
+                                        Click="OnAddResultClick" />
+                                <Button Content="Remove selected result"
+                                        Style="{StaticResource btn}"
+                                        Click="OnRemoveSelectedResultClick" />
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Grid Grid.Column="2"
+                              Grid.RowSpan="2"
+                              VerticalAlignment="Stretch">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Impacts"
+                                       Style="{StaticResource h3}" />
+                            <Grid Grid.Row="1"
+                                  VerticalAlignment="Stretch">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <ListBox x:Name="outputImpacts" />
+                                <StackPanel Style="{StaticResource sp-row-c}"
+                                            VerticalAlignment="Bottom">
+                                    <Button Content="Remove selected impact"
+                                            Style="{StaticResource btn}"
+                                            Click="OnRemoveSelectedImpactClick" />
+                                </StackPanel>
+                                <StackPanel Grid.Row="1"
+                                            VerticalAlignment="Center">
+                                    <StackPanel Style="{StaticResource sp-row-c}">
+                                        <TextBlock Text="If on "
+                                                   Margin="10 0" />
+                                        <ComboBox x:Name="inputQuestion" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource sp-row-c}">
+                                        <TextBlock Text="Answer is "
+                                                   Margin="10, 0" />
+                                        <CheckBox x:Name="InputAnswer"
+                                                  Content="Yes"
+                                                  IsChecked="True" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource sp-row-c}">
+                                        <TextBlock Text="Then "
+                                                   Margin="10 0" />
+                                        <ComboBox x:Name="inputResult" />
+                                        <TextBlock Text=" chance value"
+                                                   ToolTip="Max chance value = 1.0 = 100%"
+                                                   Margin="10 0" />
+                                    </StackPanel>
+                                    <StackPanel>
+                                        <TextBlock Text="Will be increase on "
+                                                   Margin="10 0"
+                                                   TextAlignment="Center" />
+                                        <Slider x:Name="inputIncreaseValue"
+                                                Maximum="1"
+                                                Minimum="0.001"
+                                                Value="0.1"
+                                                SmallChange="0.01" />
+                                        <TextBlock TextAlignment="Center"
+                                                   Text="{Binding Value, ElementName=inputIncreaseValue, StringFormat=Value: {0:f3}}" />
+                                        <Button Content="Add or update impact"
+                                                Style="{StaticResource btn}"
+                                                Click="OnImpactAddClick" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Run">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Margin="20">
+                        <Button Content="Restart"
+                                Style="{StaticResource btn}"
+                                Click="OnRunRestartClick"
+                                Padding="10"
+                                HorizontalAlignment="Center"
+                                Margin="20" />
+                        <StackPanel x:Name="outputExpertSystem"
+                                    Visibility="Collapsed">
+                            <StackPanel Style="{StaticResource sp-row-c}"
+                                        Margin="20">
+                                <TextBlock Text="Question: "
+                                           Style="{StaticResource h3}"
+                                           Background="Transparent" />
+                                <TextBlock x:Name="outputCurrentQuestion" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource sp-row-c}"
+                                        Margin="20">
+                                <Button Content="Yes"
+                                        Style="{StaticResource btn}"
+                                        Margin="50, 20"
+                                        Click="OnAnswerClick" />
+                                <Button Content="No"
+                                        Style="{StaticResource btn}"
+                                        Margin="50 20"
+                                        Click="OnAnswerClick" />
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Possible results" 
+                                   Style="{StaticResource h3}" />
+                        <ListBox x:Name="outputPossibleResults" />
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="About">
+                <StackPanel VerticalAlignment="Center"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="App for expert system creation" />
+                    <TextBlock>
+                        Made by
+                        <Hyperlink NavigateUri="https://github.com/nemonology">
+                            NemoNology
+                        </Hyperlink>
+                    </TextBlock>
+                    <TextBlock Text="Made using WPF framework in VS 2022 Community" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
